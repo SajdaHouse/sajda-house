@@ -1,0 +1,3 @@
+User-Agent: *
+Disallow:
+Sitemap: https://sajdahouse.netlify.app/sitemap.xml
