@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
     for (const key in result.data) {
       if (Object.prototype.hasOwnProperty.call(result.data, key)) {
-        const value = result.data[key];
+        const value = result.data[key as keyof typeof result.data];
         query.where.AND.push({ [key]: { equals: value } });
       }
     }
