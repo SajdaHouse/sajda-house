@@ -8,13 +8,13 @@ async function main() {
       id: prod.id,
       title: prod.title,
       category: prod.category,
-      mainImage: `${process.env.BASE_URL}/products/${prod.id}/MainImage_${prod.id}_V1.${
+      mainImage: `/products/${prod.id}/MainImage_${prod.id}_V1.${
         prod.mainImage.url.split(".")[3]
       }`,
       secondaryImages: JSON.stringify(
         prod.secondaryImages.map(
           (secImage, index) =>
-            `${process.env.BASE_URL}/products/${prod.id}/SecondaryImage_${prod.id}_${index}_V1.${
+            `/products/${prod.id}/SecondaryImage_${prod.id}_${index}_V1.${
               prod.mainImage.url.split(".")[3]
             }`
         )

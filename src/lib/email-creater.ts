@@ -98,7 +98,7 @@ export function createEmail({
                   (product) => `<tr>
               <td colspan="1" style="padding: 10px" width="100px">
                 <img
-                  src="${product.image}"
+                  src="${process.env.BASE_URL}${product.image}"
                   width="100px"
                   height="100px"
                   style="border-radius: 10px"
