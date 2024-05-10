@@ -1,3 +1,4 @@
+import ProductCard from "./ProductCard";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { ProductCardSkeleton } from "./product-card-skeleton";
 

@@ -1,75 +1,73 @@
 "use server";
 
-import prisma from "./db";
+import { consoleError, consoleLog, consoleSuccess } from "./console";
 import { createEmail } from "./email-creater";
 import { sendEmail } from "./mailService";
-import { formatProduct } from "./utils";
+import { createClient } from "./supabase/server";
 import { orderSchema } from "./zod-objects";
 
 export async function getProducts(match: { [key: string]: any } = {}) {
-  const products = await prisma.product.findMany({ where: match });
-  return products.map((prod) => formatProduct(prod));
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .match(match);
+  return { data, error };
 }
-
 export async function getProductsArray(ids: number[]) {
-  const products = await prisma.product.findMany({
-    where: { id: { in: ids } },
-  });
-  return products.map((prod) => formatProduct(prod));
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .in("id",ids);
+  return { data, error };
 }
-
 export async function placeOrder(values: any) {
   const result = orderSchema.safeParse(values);
   if (result.success) {
-    const products = (
-      await prisma.product.findMany({
-        where: { id: { in: result.data.products.map((prod) => prod.id) } },
-      })
-    ).map((prod) => {
-      return {
-        id: prod.id,
-        title: prod.title,
-        image: prod.mainImage,
-        price: prod.newPrice ? prod.newPrice : prod.price,
-        quantity: result.data.products.filter(
-          (product) => product.id === prod.id
-        )[0].quantity,
-      };
-    });
-    const order = await prisma.order.create({
-      data: {
-        info: JSON.stringify(result.data.info),
-        products: JSON.stringify(products),
-        status: "معلق",
-      },
-    });
+    const supabase = createClient();
+    consoleLog("placing order");
+    const { data, error } = await supabase
+      .from("orders")
+      .insert({ ...values, status: "معلق" })
+      .select("*");
+    if (!error && data && data.length === 1) {
+      consoleSuccess("order placed successfully");
 
-    if (result.data.info.email) {
-      // await sendEmail(
-      //   "sagdaroom@gmail.com",
-      //   "تم تأكيد الطلب",
-      //   createEmail({ values: result.data, id: order.id})
-      // );
-      const status = await sendEmail(
-        result.data.info.email,
-        "تم تأكيد الطلب",
-        createEmail({
-          values: { products: products, info: result.data.info },
-          id: order.id,
-        })
-      );
-      if (!status) {
-        console.error("couldn't send order email");
+      if (result.data.info.email) {
+        await sendEmail(
+          "sagdaroom@gmail.com",
+          "تم تأكيد الطلب",
+          createEmail({ values: result.data, id: data[0].id })
+        );
+        const status = await sendEmail(
+          result.data.info.email,
+          "تم تأكيد الطلب",
+          createEmail({ values: result.data, id: data[0].id })
+        );
+        if (!status) {
+          consoleError("couldn't send order email");
+        }
       }
+      return { error: false };
+    } else {
+      consoleError(
+        "couldn't place order || supabase error:",
+        error,
+        "|| data:",
+        data,
+        "|| order:",
+        values
+      );
+      return { error: true };
     }
-    return { order: { products: products, info: result.data.info } };
   } else {
-    console.error(
+    consoleError(
       "couldn't place order || zod error:",
       result.error.stack,
       "|| order:",
       values
     );
-    return { order: null };
+    return { error: true };
   }
 }

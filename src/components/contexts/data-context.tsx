@@ -4,6 +4,8 @@ import * as React from "react";
 import { cartProductType, categoryType } from "@/lib/types";
 import { useState } from "react";
 import { consoleLog } from "@/lib/console";
+import { getPlaiceholder } from "plaiceholder";
+import axios from "axios";
 interface dataContextProps {
   cart: cartProductType[];
   cartOpen: boolean;
@@ -22,13 +24,15 @@ const DataProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [cart, setCart] = useState<cartProductType[]>([]);
-  const categories = [{ id: 1, title: "غرف المعيشة" },
-  { id: 2, title: "غرف طعام" },
-  { id: 4, title: "سراير" },
-  { id: 3, title: "كراسي" },
-  { id: 5, title: "كرسي سفره" },
-  { id: 6, title: "كنب" },
-  { id: 7, title: "كنبه سرير" }];
+  const [categories, setCategories] = useState<categoryType[]>([
+    { id: 1, title: "غرف المعيشة" },
+    { id: 2, title: "غرف طعام" },
+    { id: 4, title: "سراير" },
+    { id: 3, title: "كراسي" },
+    { id: 5, title: "كرسي سفره" },
+    { id: 6, title: "كنب" },
+    { id: 7, title: "كنبه سرير" },
+  ]);
   const [cartOpen, setCartOpen] = useState(false);
 
   const refreshCart = () => {

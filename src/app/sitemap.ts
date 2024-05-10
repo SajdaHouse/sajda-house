@@ -1,11 +1,18 @@
-import prisma from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
+import { productType } from "@/lib/types";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const supabase = createClient();
 
-  const dbProducts = await prisma.product.findMany();
-  if (dbProducts.length === 0) {
-    console.error("sitemapError-Supabase:");
+  const {
+    data: dbProducts,
+    error: dbProductsError,
+  }: { data: productType[] | null; error: any } = await supabase
+    .from("products")
+    .select("*");
+  if (dbProductsError || !dbProducts || dbProducts.length === 0) {
+    console.error("sitemapError-Supabase:", dbProductsError.message);
     return [];
   }
   const dbCategories = [
@@ -64,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       | undefined;
     priority: number;
   }[] = dbCategories.map((categ) => {
-    const url = new URL("https://sajdahouse.netlify.app/products");
+    const url = new URL("https://sajdahouse.vercel.app/products");
     url.searchParams.append("category", categ.title);
     url.searchParams.append("id", categ.id.toString());
     return {
@@ -88,12 +95,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       | undefined;
     priority: number;
   }[] = dbProducts.map((prod) => {
-    const url = new URL("https://sajdahouse.netlify.app/product");
+    const url = new URL("https://sajdahouse.vercel.app/product");
     url.searchParams.append("title", prod.title);
     url.searchParams.append("id", prod.id.toString());
     return {
       url: url.toString().replace("&","&amp;"),
-      lastModified: prod.updated_at??new Date(Date.now()),
+      lastModified: new Date(prod.updated_at),
       changeFrequency: "daily",
       priority: 1,
     };
@@ -113,7 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: number;
   }[] = [
     {
-      url: "https://sajdahouse.netlify.app",
+      url: "https://sajdahouse.vercel.app",
       lastModified: new Date(1714456474967),
       changeFrequency: "weekly",
       priority: 1,

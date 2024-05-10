@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useState } from "react";
@@ -14,7 +15,7 @@ export default function ProductCard({
     title: string;
     price: number;
     newPrice: number | null;
-    mainImage: string;
+    mainImage: {url:string,hash:string};
   };
   priority?: boolean;
 }) {
@@ -27,6 +28,7 @@ export default function ProductCard({
   }
   const [loading, setLoading] = useState(false);
 
+
   return (
     <Link
       href={`/product?title=${product.title}&id=${product.id}`}
@@ -35,15 +37,24 @@ export default function ProductCard({
     >
       {/* -------------------- image -------------------- */}
 
-      <div className="w-full rounded overflow-hidden aspect-square">
-        <ImagePlaceholder
-          src={product.mainImage}
+      <ImagePlaceholder
+        src={product.mainImage.url}
+        alt={product.title}
+        width={300}
+        height={300}
+        priority={priority}
+        className="rounded w-full aspect-square"
+      />
+      {/* <Image
+          src={product.mainImage.url}
           alt={product.title}
           width={300}
           height={300}
           priority={priority}
-        />
-      </div>
+          className="rounded w-full aspect-square"
+          placeholder="blur"
+          blurDataURL={product.mainImage.hash}
+        /> */}
 
       {/* -------------------- discount -------------------- */}
 
@@ -73,9 +84,10 @@ export default function ProductCard({
               <p className="inline-block ms-1 text-gray-600">ج.م</p>
             </div>
             <div>
-              <p className="inline-block line-through text-gray-600 text-xl decoration-gray-600 leading-none">
+              <p className="inline-block line-through text-gray-400 text-xl decoration-red-500 leading-none">
                 {product.price.toLocaleString("en-us")}
               </p>
+              <p className="inline-block ms-1 text-gray-400">ج.م</p>
             </div>
           </div>
         ) : (
@@ -93,7 +105,6 @@ export default function ProductCard({
           size={"icon"}
           type="button"
           className="text-2xl font-sans font-light"
-          aria-label="Add to cart"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

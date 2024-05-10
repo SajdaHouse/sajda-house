@@ -1,7 +1,7 @@
 "use client";
 import { BsChevronLeft, BsChevronRight, BsThreeDots } from "react-icons/bs";
 import { Button } from "../ui/button";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 
 export default function Pagination({

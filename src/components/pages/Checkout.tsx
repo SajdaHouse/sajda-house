@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useData } from "../contexts/data-hook";
@@ -20,7 +20,10 @@ import { infoSchema } from "@/lib/zod-objects";
 import { placeOrder } from "@/lib/actions";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { cartProductType } from "@/lib/types";
+import { ImagePlaceholder } from "../custom/image-placeholder";
 
 const governorates: { [key: string]: string } = {
   1: "الإسكندرية",
@@ -53,28 +56,12 @@ const governorates: { [key: string]: string } = {
 };
 
 export default function CheckoutPage() {
+  const router = useRouter();
 
   const { cart, refreshCart } = useData();
+  const [cartData, setCartData] = useState<cartProductType[]>(cart);
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [order, setOrder] = useState<{
-    products: {
-      id: number;
-      title: string;
-      image: string;
-      price: number;
-      quantity: number;
-    }[];
-    info: {
-      username: string;
-      governorate: string;
-      city: string;
-      address: string;
-      phone: string;
-      email?: string | undefined;
-      additions?: string | undefined;
-    };
-  } | null>(null);
   const form = useForm<z.infer<typeof infoSchema>>({
     resolver: zodResolver(infoSchema),
     defaultValues: {
@@ -96,7 +83,9 @@ export default function CheckoutPage() {
   async function onSubmit(values: z.infer<typeof infoSchema>) {
     setLoading(true);
     const status = await placeOrder({ info: values, products: cart });
-    if (status.order) {
+    if (status.error) {
+      toast.error("حدث خطأ اثناء انشاء الطلب");
+    } else {
       if (typeof window !== "undefined") {
         window.dataLayer?.push({
           event: "Checkout Successful",
@@ -105,10 +94,7 @@ export default function CheckoutPage() {
       }
       localStorage.setItem("cart", "");
       refreshCart();
-      setOrder(status.order);
       setDialogOpen(true);
-    } else {
-      toast.error("حدث خطأ اثناء انشاء الطلب");
     }
     setLoading(false);
   }
@@ -119,18 +105,27 @@ export default function CheckoutPage() {
         <>
           <h2 className="w-full text-center mb-5">تم اضافة طلبك بنجاح</h2>
           <div className="flex flex-col gap-2">
-            {order && order.products.map((product) => (
+            {cartData.map((product) => (
               <div
                 key={product.id}
                 className="bg-white rounded sm:p-4 p-2 w-full flex justify-between items-center"
               >
-                <Image
-                  src={product.image}
-                  className="w-20 rounded"
-                  alt="item-1"
-                  width="80"
-                  height="80"
-                />
+                <ImagePlaceholder
+               src={product.image.url}
+               className="w-20 rounded"
+               alt="item-1"
+               width={80}
+               height={80}
+              />
+              {/* <Image
+                src={product.image.url}
+                className="w-20 rounded"
+                alt="item-1"
+                width="80"
+                height="80"
+                placeholder="blur"
+                blurDataURL={product.image.hash}
+              /> */}
                 <div className="flex flex-col gap-1 flex-grow lg:px-5 px-3 sm:text-base text-sm">
                   <p className="font-medium">{product.title}</p>
                   <p className="font-medium text-gray-400">

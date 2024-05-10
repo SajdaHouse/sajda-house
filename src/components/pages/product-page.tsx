@@ -6,6 +6,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useData } from "../contexts/data-hook";
@@ -17,12 +18,15 @@ export default function ProductPage({ product }: { product: productType }) {
   const [quantity, setQuantity] = useState(1);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+  console.log(product.newPrice);
 
   useEffect(() => {
     if (!api) {
       return;
     }
 
+    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
     api.on("select", () => {
@@ -64,15 +68,23 @@ export default function ProductPage({ product }: { product: productType }) {
               {[product.mainImage, ...product.secondaryImages].map(
                 (image, index) => (
                   <CarouselItem key={index}>
-                    <div className="w-full rounded-xl overflow-hidden aspect-square">
-                      <ImagePlaceholder
-                        src={image}
-                        alt={product.title}
-                        width={700}
-                        height={700}
-                        priority
-                      />
-                    </div>
+                    <ImagePlaceholder
+                      src={image.url}
+                      alt={product.title}
+                      width={700}
+                      height={700}
+                      className="w-full rounded-xl aspect-square"
+                    />
+                    {/* <Image
+                      src={image.url}
+                      alt={product.title}
+                      width={700}
+                      height={700}
+                      priority
+                      className="w-full rounded-xl aspect-square"
+                      placeholder="blur"
+                      blurDataURL={image.hash}
+                    /> */}
                   </CarouselItem>
                 )
               )}
@@ -82,22 +94,34 @@ export default function ProductPage({ product }: { product: productType }) {
             <div className="w-full flex justify-center items-center gap-2">
               {[product.mainImage, ...product.secondaryImages].map(
                 (image, index) => (
-                  <div
+                  <ImagePlaceholder
                     key={index}
-                    className={`aspect-square rounded overflow-hidden transition-opacity cursor-pointer ${
+                    src={image.url}
+                    alt={product.title}
+                    width={70}
+                    height={70}
+                    className={`aspect-square rounded transition-opacity cursor-pointer ${
                       current === index + 1 ? "opacity-100" : "opacity-50"
                     }`}
                     onClick={() => {
                       api?.scrollTo(index);
                     }}
-                  >
-                    <ImagePlaceholder
-                      src={image}
-                      alt={product.title}
-                      width={70}
-                      height={70}
-                    />
-                  </div>
+                  />
+                  // <Image
+                  //   key={index}
+                  //   src={image.url}
+                  //   alt={product.title}
+                  //   width={70}
+                  //   height={70}
+                  //   placeholder="blur"
+                  //   blurDataURL={image.hash}
+                  //   className={`aspect-square rounded transition-opacity cursor-pointer ${
+                  //     current === index + 1 ? "opacity-100" : "opacity-50"
+                  //   }`}
+                  //   onClick={() => {
+                  //     api?.scrollTo(index);
+                  //   }}
+                  // />
                 )
               )}
             </div>
@@ -171,5 +195,32 @@ export default function ProductPage({ product }: { product: productType }) {
         </div>
       </div>
     </main>
+  );
+}
+
+function ProductImage({ image, alt }: { image: string; alt: string }) {
+  const [imageLoading, setImageLoading] = useState(true);
+  return (
+    <div className="relative">
+      {imageLoading && (
+        <Image
+          className="absolute top-0 right-0 w-full h-full"
+          width={1024}
+          height={1024}
+          alt="placeholder"
+          priority
+          src="https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/placeholder.png"
+        />
+      )}
+      <Image
+        src={image}
+        alt={alt}
+        width={700}
+        height={700}
+        priority
+        className="w-full rounded-xl aspect-square"
+        placeholder="blur"
+      />
+    </div>
   );
 }

@@ -12,6 +12,9 @@ export const infoSchema = z.object({
 
 export const productsSchema = z.object({
   id: z.coerce.number().min(1),
+  title: z.string().min(1),
+  image: z.object({url:z.string().min(1),hash:z.string().min(1)}),
+  price: z.coerce.number().min(1),
   quantity: z.coerce.number().min(1),
 });
 

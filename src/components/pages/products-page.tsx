@@ -21,7 +21,7 @@ export default function ProductsPage({
   _products: productType[];
 }) {
   const [products, setProducts] = useState(_products);
-  const max = 20;
+  const [max, setMax] = useState(20);
 
   useEffect(() => {
     setProducts(_products);

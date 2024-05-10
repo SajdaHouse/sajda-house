@@ -1,7 +1,7 @@
 "use client";
 import { FaSearch } from "react-icons/fa";
 import { Input } from "../ui/input";
-import React, { Suspense, useRef, useState } from "react";
+import React, { KeyboardEvent, Suspense, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function SearchBar(){
@@ -30,7 +30,6 @@ function SearchBarInput() {
         <button
           type="submit"
           className="absolute top-[50%] right-4 translate-y-[-50%] text-teal-400 cursor-pointer"
-          aria-label="Search"
         >
           <FaSearch size={20} />
         </button>

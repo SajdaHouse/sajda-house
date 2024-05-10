@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { Skeleton } from "../ui/skeleton";
 function ProductCardSkeleton({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("flex flex-col h-full",className)} {...props}>
+    <div className="flex flex-col h-full">
       <Image
-        src="/store/placeholder.png"
+        src="https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/placeholder.png?t=2024-05-01T14%3A00%3A43.319Z"
         alt="بيت سجدة للأثاث"
         width={300}
         height={300}

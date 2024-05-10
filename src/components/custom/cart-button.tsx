@@ -12,6 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../ui/sheet";
+import { ImagePlaceholder } from "./image-placeholder";
 
 export default function CartButton() {
   const { cart, refreshCart, removeFromCart, cartOpen, setCartOpen } =
@@ -47,13 +48,20 @@ export default function CartButton() {
                   key={index}
                   className="rounded-md relative overflow-hidden border p-2 flex gap-2 items-center justify-start"
                 >
-                  <Image
-                    src={product.image}
+                  <ImagePlaceholder src={product.image.url}
+                    width={80}
+                    height={80}
+                    alt={product.title}
+                    className="rounded"/>
+                  {/* <Image
+                    src={product.image.url}
                     width={80}
                     height={80}
                     alt={product.title}
                     className="rounded"
-                  />
+                    placeholder="blur"
+                    blurDataURL={product.image.hash}
+                  /> */}
                   <div className="flex flex-col justify-evenly text-[0.8rem] leading-4 flex-grow h-full">
                     <h6 className="line-clamp-2 text-[0.8rem] leading-4 text-ellipsis break-words overflow-hidden max-h-[2rem]">
                       {product.title}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useData } from "../contexts/data-hook";
 import Image from "next/image";
 import { BsX } from "react-icons/bs";
+import { ImagePlaceholder } from "../custom/image-placeholder";
 
 export default function CartPage() {
   const { cart, removeFromCart } = useData();
@@ -56,13 +57,22 @@ export default function CartPage() {
               key={product.id}
               className="bg-white rounded sm:p-4 p-2 w-full flex justify-between items-center"
             >
-              <Image
-                src={product.image}
+              <ImagePlaceholder
+               src={product.image.url}
+               className="w-20 rounded"
+               alt="item-1"
+               width={80}
+               height={80}
+              />
+              {/* <Image
+                src={product.image.url}
                 className="w-20 rounded"
                 alt="item-1"
                 width="80"
                 height="80"
-              />
+                placeholder="blur"
+                blurDataURL={product.image.hash}
+              /> */}
               <div className="flex flex-col gap-1 flex-grow lg:px-5 px-3 sm:text-base text-sm">
                 <p className="font-medium">{product.title}</p>
                 <p className="font-medium text-gray-400">

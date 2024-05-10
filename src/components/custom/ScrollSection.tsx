@@ -11,7 +11,7 @@ export default function ScrollSection({
     title: string;
     price: number;
     newPrice: number | null;
-    mainImage: string;
+    mainImage: {url:string,hash:string};
   }[];
 }) {
   return (

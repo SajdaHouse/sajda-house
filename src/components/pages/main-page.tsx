@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
@@ -8,10 +7,9 @@ import { BsPersonFill, BsStarFill } from "react-icons/bs";
 import Link from "next/link";
 import ScrollSectionSkeleton from "../custom/scroll-section-skeleton";
 import { useCallback, useEffect, useState } from "react";
-import { type productType } from "@/lib/types";
+import { productType } from "@/lib/types";
 import { getProductsArray } from "@/lib/actions";
 import { arraymove } from "@/lib/utils";
-import { ImagePlaceholder } from "../custom/image-placeholder";
 
 export default function MainPage() {
   const categories = [
@@ -19,61 +17,61 @@ export default function MainPage() {
       id: 1,
       alt: "غرف معيشة",
       image:
-        "/store/Category%201.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%201.png",
     },
     {
       id: 2,
       alt: "غرف طعام",
       image:
-        "/store/Category%202.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%202.png",
     },
     {
       id: 3,
       alt: "كراسي",
       image:
-        "/store/Category%203.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%203.png",
     },
     {
       id: 5,
       alt: "كراسي سفره",
       image:
-        "/store/Category%204.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%204.png",
     },
     {
       id: 6,
       alt: "كنب",
       image:
-        "/store/Category%205.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%205.png",
     },
     {
       id: 7,
       alt: "كنب سرير",
       image:
-        "/store/Category%206.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%206.png",
     },
     {
       id: 8,
       alt: "سرير 120 × 200",
       image:
-        "/store/Category%207.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%207.png",
     },
     {
       id: 9,
       alt: "سرير 160 × 200",
       image:
-        "/store/Category%208.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%208.png",
     },
     {
       id: 10,
       alt: "سرير 180 × 200",
       image:
-        "/store/Category%209.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%209.png",
     },
     {
       id: 11,
       alt: "سرير 200 × 200",
       image:
-        "/store/Category%2010.png",
+        "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Category%2010.png",
     },
   ];
 
@@ -92,21 +90,37 @@ export default function MainPage() {
     const _newProducts = await getProductsArray([
       205, 17, 30, 31, 38, 216, 176, 98,
     ]);
-    setNewProducts(
-      arraymove(
-        _newProducts,
-        _newProducts.indexOf(
-          _newProducts.filter((prod) => prod.id === 205)[0]
-        ),
-        0
-      )
-    );
+    if (
+      _newProducts.error ||
+      !_newProducts.data ||
+      _newProducts.data.length === 0
+    ) {
+      console.error(_newProducts.error?.message);
+    } else {
+      setNewProducts(
+        arraymove(
+          _newProducts.data,
+          _newProducts.data.indexOf(
+            _newProducts.data.filter((prod) => prod.id === 205)[0]
+          ),
+          0
+        )
+      );
+    }
   }
   async function fetchTopSellingProducts() {
     const _topSellingProducts = await getProductsArray([
       203, 210, 216, 30, 198, 134, 135, 43, 80, 84,
     ]);
-    setTopSellingProducts(_topSellingProducts);
+    if (
+      _topSellingProducts.error ||
+      !_topSellingProducts.data ||
+      _topSellingProducts.data.length === 0
+    ) {
+      console.error(_topSellingProducts.error?.message);
+    } else {
+      setTopSellingProducts(_topSellingProducts.data);
+    }
   }
   return (
     <div className="container px-4 mb-7">
@@ -117,15 +131,15 @@ export default function MainPage() {
       <div className="rounded-lg overflow-hidden">
         <Image
           src={
-            "/store/mainPageImage.png"
+            "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/mainPageImage.png?t=2024-04-30T05%3A08%3A30.247Z"
           }
           alt="بيت سجدة للأثاث"
           width={1280}
           height={720}
           className="w-full"
-          priority
         />
       </div>
+      {/* <div className="w-16 h-0.5 mb-5 bg-teal-400 rounded-full"></div> */}
       <h3 className="mt-5 text-2xl">الأقسام</h3>
       {/* -------------------- categories carousel -------------------- */}
 
@@ -163,12 +177,172 @@ export default function MainPage() {
           <ScrollSectionSkeleton title="الاكثر مبيعا" />
         )}
       </div>
+      {/* <div className="mb-5">
+        <ScrollSection
+          title="جديد"
+          products={[
+            {
+              id: 205,
+              title: "كرسى سفرهCx-710",
+              price: 3000,
+              newPrice: 2399,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/205/MainImage_V1.jpeg",
+            },
+            {
+              id: 17,
+              title: "ركنة رمادي M902",
+              price: 35400,
+              newPrice: 27000,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/17/MainImage_V1.jpeg",
+            },
+            {
+              id: 30,
+              title: "ركنه قطيفه سماوي cox.12472",
+              price: 23500,
+              newPrice: 21000,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/30/MainImage_V1.jpeg",
+            },
+            {
+              id: 31,
+              title: "فوتية+كنبه x.p.12445",
+              price: 28500,
+              newPrice: 27000,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/31/MainImage_V1.jpeg",
+            },
+            {
+              id: 38,
+              title: "ركنه أصفر c x.6408",
+              price: 28200,
+              newPrice: 23400,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/38/MainImage_V1.jpeg",
+            },
+
+            {
+              id: 216,
+              title: "كرسي زيتي×بني",
+              price: 2760,
+              newPrice: 2320,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/216/MainImage_V1.jpeg",
+            },
+            {
+              id: 176,
+              title: "كرسي منت c.x-804",
+              price: 7300,
+              newPrice: 6210,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/176/MainImage_V1.jpeg",
+            },
+            {
+              id: 98,
+              title: "غرفه معيشه 3 قطع",
+              price: 36000,
+              newPrice: 32800,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/98/MainImage_V1.jpeg",
+            },
+          ]}
+        />
+      </div>
+      <div className="my-5">
+        <ScrollSection
+          title="الاكثر مبيعا"
+          products={[
+            {
+              id: 203,
+              title: "كرسي أوف وايت c.x.55.67",
+              price: 3480,
+              newPrice: 2880,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/203/MainImage_V1.png",
+            },
+            {
+              id: 210,
+              title: "كرسي سفره أخضر",
+              price: 2640,
+              newPrice: 2190,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/210/MainImage_V1.jpeg",
+            },
+            {
+              id: 216,
+              title: "كرسي زيتي×بني",
+              price: 2760,
+              newPrice: 2320,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/216/MainImage_V1.jpeg",
+            },
+            {
+              id: 30,
+              title: "ركنه قطيفه سماوي cox.12472",
+              price: 23500,
+              newPrice: 21000,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/30/MainImage_V1.jpeg",
+            },
+            {
+              id: 198,
+              title: "كرسى جانبى أصفر K-110",
+              price: 4740,
+              newPrice: 3120,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/198/MainImage_V1.jpeg",
+            },
+            {
+              id: 134,
+              title: "غرفه طعام بيج وبني.c.x-48.86",
+              price: 21000,
+              newPrice: 18600,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/134/MainImage_V1.jpeg",
+            },
+            {
+              id: 135,
+              title: "سفره 9 قطع R.821",
+              price: 33720,
+              newPrice: 29700,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/135/MainImage_V1.jpeg",
+            },
+            {
+              id: 43,
+              title: "ركنه كحلي cox.6362",
+              price: 25200,
+              newPrice: 19800,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/43/MainImage_V1.jpeg",
+            },
+            {
+              id: 80,
+              title: "ركنه بيج K140-12",
+              price: 25800,
+              newPrice: 21000,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/80/MainImage_V1.jpeg",
+            },
+            {
+              id: 84,
+              title: "ركنه جنزاري K140-44",
+              price: 29400,
+              newPrice: 21000,
+              mainImage:
+                "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/products/84/MainImage_V1.jpeg",
+            },
+          ]}
+        />
+      </div> */}
       <div className="flex justify-center border-t mt-4">
         <div className="flex justify-between items-center max-w-5xl w-full">
-          <h3 className="mt-5 mb-4">أراء العملاء</h3>
+          <h3 className="font-bold text-teal-500 mt-5 mb-4">أراء العملاء</h3>
           <Button
             size={"sm"}
             variant={"link"}
+            className="text-teal-400"
             asChild
           >
             <Link
@@ -262,13 +436,14 @@ function CategoryBanner({
       title={category.alt}
     >
       <div className="bg-white rounded-[0.75rem] shadow-lg p-1 hover:p-0 aspect-[620/800] flex items-center justify-center overflow-hidden transition-all">
-        <div className="rounded overflow-hidden">
-          <ImagePlaceholder priority
+        <Image
+          priority
           src={category.image}
           alt={category.alt}
           width={620}
-          height={800}/>
-        </div>
+          height={800}
+          className="rounded"
+        />
       </div>
     </Link>
   );

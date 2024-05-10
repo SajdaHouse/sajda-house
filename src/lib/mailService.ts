@@ -1,12 +1,15 @@
 import nodemailer from "nodemailer";
+import { string } from "zod";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
+import Mail from "nodemailer/lib/mailer";
 const createTransporter = async () => {
   const transporter = nodemailer.createTransport({
     host:"smtp-relay.brevo.com",
     port:587,
     secure:false,
     auth:{
-      user:"748f4a001@smtp-brevo.com",
-      pass:"CQO0vr4EqP7ayGD1"
+      user:"beatsagda@gmail.com",
+      pass:"4J9g2dqAsfRKvn5p"
     }
   });
 
@@ -21,7 +24,7 @@ export async function sendEmail(
     const emailTransporter = await createTransporter();
     if (emailTransporter) {
       await emailTransporter.sendMail({
-        from: "sajdahouse1@gmail.com",
+        from: "beatsagda@gmail.com",
         to: reciever,
         subject: subject,
         html: content,

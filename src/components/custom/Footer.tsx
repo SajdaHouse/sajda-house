@@ -117,7 +117,7 @@ export default function Footer() {
 
             <div className="flex flex-col items-center">
               <Image
-                src="/store/Logo.png"
+                src="https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Logo.png"
                 width="170"
                 height="98"
                 alt="Logo"
@@ -134,7 +134,7 @@ export default function Footer() {
                   target="_blank"
                 >
                   <Image
-                    src="/store/Facebook.png"
+                    src="https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Facebook.png"
                     width="30"
                     height="30"
                     alt="Facebook"

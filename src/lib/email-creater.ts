@@ -1,25 +1,11 @@
+import { z } from "zod";
+import { orderSchema } from "./zod-objects";
+
 export function createEmail({
   values,
   id,
 }: {
-  values: {
-    products: {
-      id: number;
-      title: string;
-      image: string;
-      price: number;
-      quantity: number;
-    }[];
-    info: {
-      username: string;
-      governorate: string;
-      city: string;
-      address: string;
-      phone: string;
-      email?: string | undefined;
-      additions?: string | undefined;
-    };
-  };
+  values: z.infer<typeof orderSchema>;
   id: number;
 }) {
   let productsPrice = 0;
@@ -51,7 +37,7 @@ export function createEmail({
     >
       <table width="100%" border="0">
         <tr>
-          <td colspan="3"><img src="https://sajdahouse.netlify.app/store/Logo.png" width="106" height="61" /></td>
+          <td colspan="3"><img src="https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Logo.png" width="106" height="61" /></td>
         </tr>
         <tr>
           <td
@@ -98,7 +84,7 @@ export function createEmail({
                   (product) => `<tr>
               <td colspan="1" style="padding: 10px" width="100px">
                 <img
-                  src="https://sajdahouse.netlify.app${product.image}"
+                  src="${product.image.url}"
                   width="100px"
                   height="100px"
                   style="border-radius: 10px"

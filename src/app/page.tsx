@@ -1,9 +1,11 @@
 import MainPage from "@/components/pages/main-page";
+import axios from "axios";
 import { Metadata } from "next";
+import { getPlaiceholder } from "plaiceholder";
 
 export const metadata: Metadata = {
   openGraph: {
-    url: "https://sajdahouse.netlify.app",
+    url: "https://sajdahouse.vercel.app",
     type: "website",
     title: "بيت سجدة للأثاث المنزلي | غرف معيشة وطعام - كنب - كراسي - سراير",
     description:
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     images:
       "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Logo_white.png",
   },
-  alternates: { canonical: "https://sajdahouse.netlify.app" },
+  alternates: { canonical: "https://sajdahouse.vercel.app" },
 };
 
 export default async function Home() {
@@ -40,10 +42,10 @@ export default async function Home() {
       "SajdaRoom",
       "sajdahouse.vercel.app",
     ],
-    url: "https://sajdahouse.netlify.app/",
+    url: "https://sajdahouse.vercel.app/",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://sajdahouse.netlify.app/products?search={query}",
+      "target": "http://sajdahouse.vercel.app/products?search={query}",
       "query-input": "required maxlength=100 name=query"
     }
   };
@@ -59,4 +61,13 @@ export default async function Home() {
       </section>
     </>
   );
+}
+async function getImageBufferFromUrl(imageUrl: string): Promise<Buffer | null> {
+  try {
+    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+    return response.data as Buffer;
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    return null;
+  }
 }

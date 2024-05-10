@@ -1,16 +1,14 @@
 import ProductsPage from "@/components/pages/products-page";
-import { consoleLog, consoleSuccess } from "@/lib/console";
-import prisma from "@/lib/db";
+import { consoleError, consoleLog, consoleSuccess } from "@/lib/console";
+import { createClient } from "@/lib/supabase/server";
 import { productType } from "@/lib/types";
-import { formatProduct } from "@/lib/utils";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  { searchParams }: { searchParams: { [key: string]: string | undefined } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const category = searchParams["id"];
   const search = searchParams["search"];
   const categories = [
@@ -56,7 +54,7 @@ export async function generateMetadata({
     },
   ];
   return {
-    title: `${search ? `${search} -` : "جميع المنتجات -"}${
+    title: `${search ? `${search} -` : ""}${
       category &&
       categories.filter((categ) => categ.id.toString() === category.trim())[0]
         ? `${
@@ -79,71 +77,113 @@ export default async function Page({
 
   let products: productType[] = [];
 
+  const supabase = createClient();
+
   consoleLog("Fetching products || category:", category, "|| search:", search);
 
   if (category && search) {
-    const dbProducts = await prisma.product.findMany({
-      where: {
-        AND: [
-          { title: { contains: search } },
-          { category: { equals: parseInt(category) } },
-        ],
-      },
-    });
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .ilike("title", `%${search}%`)
+      .eq("category", category);
 
-    if (dbProducts.length === 0) {
+    if (error || !data) {
+      consoleError(
+        "Couldn't Fetch products|| category:",
+        category,
+        "|| search:",
+        search,
+        "|| error:",
+        error,
+        "|| data:",
+        data
+      );
       notFound();
     }
 
     consoleSuccess(
       "products for Products page fetched successfully ||",
-      dbProducts.length
+      data.length
     );
 
-    products.push(...dbProducts.map((prod) => formatProduct(prod)));
+    products.push(...data);
   } else if (category) {
-    const dbProducts = await prisma.product.findMany({
-      where: { category: { equals: parseInt(category) } },
-    });
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("category", category);
 
-    if (dbProducts.length === 0) {
+    if (error || !data) {
+      consoleError(
+        "Couldn't Fetch products|| category:",
+        category,
+        "|| search:",
+        search,
+        "|| error:",
+        error,
+        "|| data:",
+        data
+      );
       notFound();
     }
 
     consoleSuccess(
       "products for Products page fetched successfully ||",
-      dbProducts.length
+      data.length
     );
 
-    products.push(...dbProducts.map((prod) => formatProduct(prod)));
+    products.push(...data);
   } else if (search) {
-    const dbProducts = await prisma.product.findMany({
-      where: { title: { contains: search } },
-    });
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .ilike("title", `%${search}%`);
 
-    if (dbProducts.length === 0) {
+    if (error || !data) {
+      consoleError(
+        "Couldn't Fetch products|| category:",
+        category,
+        "|| search:",
+        search,
+        "|| error:",
+        error,
+        "|| data:",
+        data
+      );
       notFound();
     }
 
     consoleSuccess(
       "products for Products page fetched successfully ||",
-      dbProducts.length
+      data.length
     );
 
-    products.push(...dbProducts.map((prod) => formatProduct(prod)));
+    products.push(...data);
   } else {
-    const dbProducts = await prisma.product.findMany();
+    const { data, error } = await supabase.from("products").select("*");
 
-    if (dbProducts.length === 0) {
+    if (error || !data) {
+      consoleError(
+        "Couldn't Fetch products|| category:",
+        category,
+        "|| search:",
+        search,
+        "|| error:",
+        error,
+        "|| data:",
+        data
+      );
       notFound();
     }
 
     consoleSuccess(
       "products for Products page fetched successfully ||",
-      dbProducts.length
+      data.length
     );
 
-    products.push(...dbProducts.map((prod) => formatProduct(prod)));
+    products.push(...data);
   }
+
   return <ProductsPage _products={products} />;
 }

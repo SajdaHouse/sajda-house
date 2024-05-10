@@ -10,7 +10,7 @@ export default function Header() {
       <div className="mt-4 flex justify-between items-center">
         <Link href="/" title="بيت سجدة">
           <Image
-            src="/store/Logo.png"
+            src="https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Logo.png"
             alt="Logo"
             width={106}
             height={61}
