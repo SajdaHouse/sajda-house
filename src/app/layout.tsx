@@ -7,7 +7,6 @@ import { DataProvider } from "@/components/contexts/data-context";
 import Navbar from "@/components/custom/Navbar";
 import Header from "@/components/custom/Header";
 import Footer from "@/components/custom/Footer";
-import { SpeedInsights } from "@netlify/speed-insights/next";
 import Link from "next/link";
 import Image from "next/image";
 import { GoogleTagManager } from "@next/third-parties/google";
@@ -69,7 +68,6 @@ export default function RootLayout({
           <Footer />
           <Toaster />
         </DataProvider>
-        <SpeedInsights />
         <Link
           href="https://api.whatsapp.com/send/?phone=201005187712&text&type=phone_number&app_absent=0"
           className="size-20 p-3 block bottom-1 left-1 fixed z-50"
