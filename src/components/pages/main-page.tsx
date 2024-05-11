@@ -137,6 +137,7 @@ export default function MainPage() {
           width={1280}
           height={720}
           className="w-full"
+          priority
         />
       </div>
       {/* <div className="w-16 h-0.5 mb-5 bg-teal-400 rounded-full"></div> */}
