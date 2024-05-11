@@ -5,7 +5,7 @@ import { getPlaiceholder } from "plaiceholder";
 
 export const metadata: Metadata = {
   openGraph: {
-    url: "https://sajdahouse.vercel.app",
+    url: "https://sajdahouse.netlify.app",
     type: "website",
     title: "بيت سجدة للأثاث المنزلي | غرف معيشة وطعام - كنب - كراسي - سراير",
     description:
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images:
       "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/Logo_white.png",
   },
-  alternates: { canonical: "https://sajdahouse.vercel.app" },
+  alternates: { canonical: "https://sajdahouse.netlify.app" },
 };
 
 export default async function Home() {
@@ -40,12 +40,12 @@ export default async function Home() {
       "SajdaHouse",
       "SagdaRoom",
       "SajdaRoom",
-      "sajdahouse.vercel.app",
+      "sajdahouse.netlify.app",
     ],
-    url: "https://sajdahouse.vercel.app/",
+    url: "https://sajdahouse.netlify.app/",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "http://sajdahouse.vercel.app/products?search={query}",
+      "target": "http://sajdahouse.netlify.app/products?search={query}",
       "query-input": "required maxlength=100 name=query"
     }
   };

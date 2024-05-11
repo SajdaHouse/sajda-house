@@ -71,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       | undefined;
     priority: number;
   }[] = dbCategories.map((categ) => {
-    const url = new URL("https://sajdahouse.vercel.app/products");
+    const url = new URL("https://sajdahouse.netlify.app/products");
     url.searchParams.append("category", categ.title);
     url.searchParams.append("id", categ.id.toString());
     return {
@@ -95,7 +95,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       | undefined;
     priority: number;
   }[] = dbProducts.map((prod) => {
-    const url = new URL("https://sajdahouse.vercel.app/product");
+    const url = new URL("https://sajdahouse.netlify.app/product");
     url.searchParams.append("title", prod.title);
     url.searchParams.append("id", prod.id.toString());
     return {
@@ -120,7 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: number;
   }[] = [
     {
-      url: "https://sajdahouse.vercel.app",
+      url: "https://sajdahouse.netlify.app",
       lastModified: new Date(1714456474967),
       changeFrequency: "weekly",
       priority: 1,

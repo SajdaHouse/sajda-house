@@ -7,7 +7,7 @@ import { DataProvider } from "@/components/contexts/data-context";
 import Navbar from "@/components/custom/Navbar";
 import Header from "@/components/custom/Header";
 import Footer from "@/components/custom/Footer";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SpeedInsights } from "@netlify/speed-insights/next";
 import Link from "next/link";
 import Image from "next/image";
 import { GoogleTagManager } from "@next/third-parties/google";

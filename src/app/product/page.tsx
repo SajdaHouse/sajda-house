@@ -39,7 +39,7 @@ export async function generateMetadata(
   const productDescription = product.description.map(
     (des) => `${des.title} : ${des.rows.join(" - ")}`
   )[0];
-  const productURL = `https://sajdahouse.vercel.app/product?title=${product.title}&id=${product.id}`;
+  const productURL = `https://sajdahouse.netlify.app/product?title=${product.title}&id=${product.id}`;
   const productImages = [product.mainImage, ...product.secondaryImages];
   const productPrice = product.newPrice ? product.newPrice : product.price;
   return {
@@ -148,7 +148,7 @@ export default async function Page({
   const productDescription = product.description.map(
     (des) => `${des.title} : ${des.rows.join(" - ")}`
   )[0];
-  const productURL = `https://sajdahouse.vercel.app/product?title=${product.title}&id=${product.id}`;
+  const productURL = `https://sajdahouse.netlify.app/product?title=${product.title}&id=${product.id}`;
   const productImages = [product.mainImage, ...product.secondaryImages];
   const productPrice = product.newPrice ? product.newPrice : product.price;
 
