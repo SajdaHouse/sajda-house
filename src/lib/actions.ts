@@ -35,11 +35,11 @@ export async function placeOrder(values: any) {
       consoleSuccess("order placed successfully");
 
       if (result.data.info.email) {
-        // await sendEmail(
-        //   "sagdaroom@gmail.com",
-        //   "تم تأكيد الطلب",
-        //   createEmail({ values: result.data, id: data[0].id })
-        // );
+        await sendEmail(
+          "sagdaroom@gmail.com",
+          "تم تأكيد الطلب",
+          createEmail({ values: result.data, id: data[0].id })
+        );
         const status = await sendEmail(
           result.data.info.email,
           "تم تأكيد الطلب",
