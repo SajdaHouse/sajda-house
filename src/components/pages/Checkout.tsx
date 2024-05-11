@@ -88,7 +88,7 @@ export default function CheckoutPage() {
     } else {
       if (typeof window !== "undefined") {
         window.dataLayer?.push({
-          event: "Checkout Successful",
+          event: "checkout",
           "Checkout Value": totalPrice,
         });
       }
