@@ -63,7 +63,7 @@ export async function generateMetadata(
             )[0].title
           } -`
         : ""
-    } بيت سجدة للأثاث المنزلي`,
+    }${(!search&&!category)?"جميع المنتجات -":""} بيت سجدة للأثاث المنزلي`,
   };
 }
 
