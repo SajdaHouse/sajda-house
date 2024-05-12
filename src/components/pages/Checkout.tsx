@@ -91,6 +91,13 @@ export default function CheckoutPage() {
           event: "checkout",
           "Checkout Value": totalPrice,
         });
+        window.dataLayer?.push({
+          event: "conversion",
+          send_to: "AW-16554192142/281XCLv56q4ZEI7a09U9",
+          value: totalPrice,
+          currency: "EGP",
+          transaction_id: "",
+        });
       }
       localStorage.setItem("cart", "");
       refreshCart();
@@ -111,13 +118,13 @@ export default function CheckoutPage() {
                 className="bg-white rounded sm:p-4 p-2 w-full flex justify-between items-center"
               >
                 <ImagePlaceholder
-               src={product.image.url}
-               className="w-20 rounded"
-               alt="item-1"
-               width={80}
-               height={80}
-              />
-              {/* <Image
+                  src={product.image.url}
+                  className="w-20 rounded"
+                  alt="item-1"
+                  width={80}
+                  height={80}
+                />
+                {/* <Image
                 src={product.image.url}
                 className="w-20 rounded"
                 alt="item-1"
