@@ -131,7 +131,7 @@ export default function MainPage() {
       <div className="rounded-lg overflow-hidden">
         <Image
           src={
-            "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/mainPageImage.png?t=2024-04-30T05%3A08%3A30.247Z"
+            "https://vtjclpwgljeqcdjmitvj.supabase.co/storage/v1/object/public/store/mainPageImage2.png"
           }
           alt="بيت سجدة للأثاث"
           width={1280}
