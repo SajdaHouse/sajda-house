@@ -13,7 +13,7 @@ import { arraymove } from "@/lib/utils";
 import Script from "next/script";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_MEASUREMENT_ID;
 <Script
-  src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+  src={`https://www.googletagmanager.com/gtag/js?id=${G-2FPWD9QP9G}`}
   strategy="afterInteractive"
 />
 <Script id="google-analytics" strategy="afterInteractive">
