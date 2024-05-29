@@ -88,7 +88,7 @@ export default function MainPage() {
   }, []);
   async function fetchNewProducts() {
     const _newProducts = await getProductsArray([
-      205, 17, 30, 31, 38, 216, 176, 98,
+      205, 17, 30, 31, 38, 216, 176, 98, 419, 431
     ]);
     if (
       _newProducts.error ||
