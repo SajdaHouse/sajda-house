@@ -101,7 +101,7 @@ export default function MainPage() {
         arraymove(
           _newProducts.data,
           _newProducts.data.indexOf(
-            _newProducts.data.filter((prod) => prod.id === 205)[0]
+            _newProducts.data.filter((prod) => prod.id === 419)[0]
           ),
           0
         )
